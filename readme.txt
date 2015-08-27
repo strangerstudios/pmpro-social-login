@@ -5,7 +5,7 @@ Requires at least: 3.0
 Tested up to: 4.3
 Stable tag: .1
 
-Allow users to create account via social networks as configured via WordPress Social Login by Miled.
+Allow users to create membership account via social networks as configured via WordPress Social Login by Miled.
 
 == Description ==
 
