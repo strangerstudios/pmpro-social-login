@@ -8,6 +8,12 @@ Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
+function pmprosl_pmpro_default_registration_level($user_id) {
+	if(defined(PMPRO_DEFAULT_LEVEL))
+		pmpro_changeMembershipLevel(PMPRO_DEFAULT_LEVEL, $user_id);
+}
+add_action('user_register', 'pmprosl_pmpro_default_registration_level');
+
 /**
  * Include the TGM_Plugin_Activation class.
  */
