@@ -8,9 +8,31 @@ Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
+/*
+	If a PMPROSL_DEFAULT_LEVEL constant is set
+	give new users logging in and registering
+	via social login that default level.
+*/
 function pmprosl_pmpro_default_registration_level($user_id) {
-	if(defined(PMPRO_DEFAULT_LEVEL))
-		pmpro_changeMembershipLevel(PMPRO_DEFAULT_LEVEL, $user_id);
+	global $pmpro_level;	
+	
+	//if default is set and we're not otherwise checking out
+	$default_level = get_option('pmpro_social_login_default_level');
+	if (!empty($default_level) && empty($pmpro_level) && empty($_REQUEST['level']))
+	{	
+		pmpro_changeMembershipLevel($default_level, $user_id);
+
+		$user = get_userdata($user_id);
+		$user->membership_level = pmpro_getMembershipLevelForUser($user->ID);
+		
+		//send email to member
+		$pmproemail = new PMProEmail();
+		$pmproemail->sendCheckoutEmail($user, false);
+
+		//send email to admin
+		$pmproemail = new PMProEmail();
+		$pmproemail->sendCheckoutAdminEmail($user, false);
+	}
 }
 add_action('user_register', 'pmprosl_pmpro_default_registration_level');
 
@@ -148,10 +170,14 @@ function pmprosl_tgmpa_register() {
 function pmprosl_pmpro_membership_level_after_other_settings()
 {
 	$level = $_REQUEST['edit'];	
-	$hide_social_login = pmpro_getOption("level_" . $level . "_hide_social_login");
+	$social_login_default_level = get_option('pmpro_social_login_default_level');
+	$hide_social_login = get_option("level_" . $level . "_hide_social_login");
 	?>
 	<h3 class="topborder"><?php _e('Social Login','pmprosl'); ?></h3>
-	<label for="hide_social_login"><input name="hide_social_login" type="checkbox" id="hide_social_login" <?php checked( $hide_social_login, 1 ); ?> value="1"> <?php _e('Hide Social Login at Checkout for this Level','pmprosl'); ?></label>
+	
+	<p><label for="social_login_default_level"><input name="social_login_default_level" type="checkbox" id="social_login_default_level" <?php checked( $social_login_default_level, $level ); ?> value="1"> <?php _e('Make this the default level to users logging in for the first time via Social Login','pmprosl'); ?></label></p>
+	
+	<p><label for="hide_social_login"><input name="hide_social_login" type="checkbox" id="hide_social_login" <?php checked( $hide_social_login, 1 ); ?> value="1"> <?php _e('Hide Social Login at Checkout for this Level','pmprosl'); ?></label></p>
 	<?php
 }
 add_action("pmpro_membership_level_after_other_settings", "pmprosl_pmpro_membership_level_after_other_settings");
@@ -159,15 +185,37 @@ add_action("pmpro_membership_level_after_other_settings", "pmprosl_pmpro_members
 //update the setting on save
 function pmprosl_pmpro_save_membership_level($saveid)
 {
-	$hide_social_login = $_REQUEST['hide_social_login'];
-	pmpro_setOption("level_" . $saveid . "_hide_social_login", $hide_social_login);
+	//update hide social login setting
+	if(!empty($_REQUEST['hide_social_login']))
+	{
+		delete_option('level_' . $saveid . '_hide_social_login');
+		add_option("level_" . $saveid . "_hide_social_login", 1, '', 'no');
+	}
+	else
+	{
+		delete_option('level_' . $saveid . '_hide_social_login');
+	}
+		
+	//update default level options
+	if(!empty($_REQUEST['social_login_default_level']))
+	{
+		delete_option('pmpro_social_login_default_level');
+		add_option('pmpro_social_login_default_level', $saveid, '', 'no');
+	}
+	else
+	{
+		$default_level = get_option('pmpro_social_login_default_level');
+		if($default_level == $saveid)
+			delete_option('pmpro_social_login_default_level');
+	}
+	
 }
 add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level");
 
 //add social login to the checkout page
 function pmprosl_pmpro_user_fields() {
 	global $pmpro_level;
-	$hide_social_login = pmpro_getOption("level_" . $pmpro_level->id . "_hide_social_login");
+	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
 	if(empty($hide_social_login) && !is_user_logged_in() )
 	{
 		?>
