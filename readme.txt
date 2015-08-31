@@ -9,7 +9,7 @@ Allow users to create membership account via social networks as configured via W
 
 == Description ==
 
-The Paid Memberships Pro WordPress Social Login Add On adds a Social Login option to Membership Checkout. You can set a level to "Hide" social login from the Memberships > Membership Levels > Edit Level admin page.
+The Paid Memberships Pro WordPress Social Login Add On adds a Social Login option to Membership Checkout. You can set a level to "Hide" social login from the Memberships > Membership Levels > Edit Level admin page. You can set a level as the default level to users logging in for the first time via Social Login.
 
 Requires WordPress Social Login and Paid Memberships Pro installed and activated.
 
@@ -26,8 +26,9 @@ Requires WordPress Social Login and Paid Memberships Pro installed and activated
 
 == How to Use ==
 
-1. After activation and proper configuration of the WordPress Social Login plugin, you can navigate to the membership checkout page as a visitor to see the Social Login options. 
-1. To hide Social Login at Membership Checkout for a specifc level, edit the Memberships Level and check the box to "Hide Social Login at Checkout for this Level".
+1. After activation and proper configuration of the WordPress Social Login plugin, you can navigate to the membership checkout page as a visitor to see the Social Login options. See http://www.paidmembershipspro.com/add-ons/plus-add-ons/social-login-add-on/ for application setup with social networks.
+1. To hide Social Login at Membership Checkout for a specifc level, edit the Membership Level and check the box to "Hide Social Login at Checkout for this Level".
+1. To set the default level to users logging in for the first time via Social Login, edit the Membership Level and check the box to "Make this the default level to users logging in for the first time via Social Login".
 
 == Changelog ==
 = .1 =
