@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: pmpro, paid memberships pro, members, social login, wordpress social login
 Requires at least: 3.0
 Tested up to: 4.3
-Stable tag: .1
+Stable tag: .1.1
 
 Allow users to create membership account via social networks as configured via WordPress Social Login by Miled.
 
@@ -31,5 +31,8 @@ Requires WordPress Social Login and Paid Memberships Pro installed and activated
 1. To set the default level to users logging in for the first time via Social Login, edit the Membership Level and check the box to "Make this the default level to users logging in for the first time via Social Login".
 
 == Changelog ==
+= .1.1 =
+* BUG: No longer hiding "Complete Payment" button for PayPal on review page.
+
 = .1 =
 * Initial commit.

@@ -148,9 +148,9 @@ add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level")
 
 //add social login to the checkout page
 function pmprosl_pmpro_user_fields() {
-	global $pmpro_level;
+	global $pmpro_level, $pmpro_review;
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
-	if(empty($hide_social_login) && !is_user_logged_in() )
+	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_review))
 	{
 		?>
 		<style>#pmpro_user_fields, #pmpro_submit_span{display: none; }</style>
