@@ -3,7 +3,7 @@
 Plugin Name: Paid Memberships Pro - WordPress Social Login Add On
 Plugin URI: http://www.paidmembershipspro.com/wp/pmpro-social-login/
 Description: Allow users to create membership account via social networks as configured via WordPress Social Login by Miled.
-Version: .1
+Version: .2
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
@@ -148,12 +148,12 @@ add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level")
 
 //add social login to the checkout page
 function pmprosl_pmpro_user_fields() {
-	global $pmpro_level;
+	global $pmpro_level, $pmpro_error_fields;
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
-	if(empty($hide_social_login) && !is_user_logged_in() )
+	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields))
 	{
 		?>
-		<style>#pmpro_user_fields, #pmpro_submit_span{display: none; }</style>
+		<style>#pmpro_user_fields {display: none; }</style>
 		<div id="pmpro_social_login" class="pmpro_checkout">
 			<?php echo do_shortcode( '[wordpress_social_login]' ); ?>
 			<div class="pmpro_clear"></div>
@@ -164,7 +164,6 @@ function pmprosl_pmpro_user_fields() {
 			jQuery('#pmpro_user_fields_a').attr('href', 'javascript:void(0);');
 			jQuery('#pmpro_user_fields_a').click(function() {
 				jQuery('#pmpro_user_fields').show();
-				jQuery('#pmpro_submit_span').show();
 				jQuery('#pmpro_user_fields_show').hide();
 			});
 		</script>	
