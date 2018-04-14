@@ -157,7 +157,7 @@ function pmprosl_pmpro_user_fields() {
 		<div id="pmpro_social_login" class="pmpro_checkout">
 			<?php echo do_shortcode( '[wordpress_social_login]' ); ?>
 			<div class="pmpro_clear"></div>
-			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to create a username and password</a>','pmpro'); ?></div>
+			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to log in, create a username and password</a>','pmpro'); ?></div>
 		</div>
 		<script>
 			//show username and password fields 
