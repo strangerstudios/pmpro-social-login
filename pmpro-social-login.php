@@ -171,6 +171,6 @@ add_action('pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields');
 
 // Choose which shortcode to display
 function pmprosl_get_login_shortcode() {
-	$plugin = apply_filter('pmprosl_login_shortcode', pmpro_getOption( 'social_login_shortcode' ) );
+	$plugin = apply_filters('pmprosl_login_shortcode', pmpro_getOption( 'social_login_shortcode' ) );
 	return $plugin;
 }
