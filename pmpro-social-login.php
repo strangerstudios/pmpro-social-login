@@ -39,7 +39,7 @@ function pmprosl_check_plugins() {
 	foreach( $plugins as $plugin ) {
 		// is the plugin installed? if so, add to list of active plugins
 		if( defined( $plugin['constant'] ) ) {
-			$active_plugins[] = $plugin['name'];
+			$active_plugins[] = $plugin;
 		}
 	}
 	$active_plugin_count = count( $active_plugins );
@@ -54,8 +54,8 @@ function pmprosl_check_plugins() {
 		$msgt .= __("Paid Memberships Pro Social Login will use ", 'paid-memberships-pro') . $active_plugins[0]['name'];
 		$msgt .= __(" for social login integration. Deactivate the plugins you don't want to use or use the pmprosl_login_shortcode filter to change this behavior.", 'paid-memberships-pro');
 	}
+	// no plugins installed, warn about that
 	elseif( $active_plugin_count < 1 ) {
-		// they don't have at least one plugin installed, warn them about that
 		if( empty($msg) )
 			$msg = -1;
 		$msgt .= __('The Social Login Add On for Paid Memberships Pro requires either the <a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a> or <a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a> plugin to be installed and configured.', 'paid-memberships-pro');
@@ -144,6 +144,9 @@ add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level")
 function pmprosl_pmpro_user_fields() {
 	global $pmpro_level, $pmpro_error_fields;
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
+	// don't show this if we don't have a shortcode
+	if( empty( pmpro_get_option( 'social_login_shortcode' ) ) )
+		return;
 	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields))
 	{
 		?>
