@@ -171,6 +171,21 @@ add_action('pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields');
 
 // Choose which shortcode to display
 function pmprosl_get_login_shortcode() {
-	$plugin = apply_filters('pmprosl_login_shortcode', pmpro_getOption( 'social_login_shortcode' ) );
+	global $wp, $pmpro_pages;
+	$plugin = pmpro_getOption( 'social_login_shortcode' );
+	// if using NextEnd and coming from checkout, make sure we redirect back to checkout
+	if($plugin === '[nextend_social_login]' && is_page( $pmpro_pages['checkout'] ) ){
+		$plugin === '[nextend_social_login redirect=' . 	home_url(add_query_arg(array($_GET), $wp->request)) . ']';
+	}
+	$plugin = apply_filters( 'pmprosl_login_shortcode', $plugin );
 	return $plugin;
 }
+
+// use the requested redirect if we're logging in with NextEnd
+function pmprosl_preserve_redirect($redirect_to, $request, $user) {
+	if( isset($_REQUEST["loginSocial"]) ) {
+		$redirect_to = $request;
+	}
+	return $redirect_to;
+}
+add_filter('pmpro_login_redirect_url', 'pmprosl_preserve_redirect', 10, 3);
