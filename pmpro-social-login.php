@@ -145,7 +145,7 @@ function pmprosl_pmpro_user_fields() {
 	global $pmpro_level, $pmpro_error_fields;
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
 	// don't show this if we don't have a shortcode
-	if( empty( pmpro_get_option( 'social_login_shortcode' ) ) )
+	if( empty( pmpro_getOption( 'social_login_shortcode' ) ) )
 		return;
 	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields))
 	{
@@ -171,6 +171,6 @@ add_action('pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields');
 
 // Choose which shortcode to display
 function pmprosl_get_login_shortcode() {
-	$plugin = apply_filter('pmprosl_login_shortcode', pmpro_get_option( 'social_login_shortcode' ) );
+	$plugin = apply_filter('pmprosl_login_shortcode', pmpro_getOption( 'social_login_shortcode' ) );
 	return $plugin;
 }
