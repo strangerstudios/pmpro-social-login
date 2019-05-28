@@ -34,7 +34,6 @@ function pmprosl_check_plugins() {
 			'constant' => 'WORDPRESS_SOCIAL_LOGIN_ABS_PATH',
 		)
 	);
-	error_log("Plugins array: " . var_export($plugins, true) );
 	$active_plugins = array();
 	foreach( $plugins as $plugin ) {
 		// is the plugin installed? if so, add to list of active plugins
@@ -45,8 +44,7 @@ function pmprosl_check_plugins() {
 	$active_plugin_count = count( $active_plugins );
 	if( $active_plugin_count > 1 ) {
 		// more than one plugin installed, let's warn them
-		if( empty($msg) )
-			$msg = -1;
+		$msg = -1;
 		$msgt .= __("The following plugins are activated: <br/>", 'paid-memberships-pro');
 		for( $i = 0; $i < $active_plugin_count; $i++ ) {
 			$msgt .= $active_plugins[$i]['name'] . "<br/>";
@@ -56,8 +54,7 @@ function pmprosl_check_plugins() {
 	}
 	// no plugins installed, warn about that
 	elseif( $active_plugin_count < 1 ) {
-		if( empty($msg) )
-			$msg = -1;
+		$msg = -1;
 		$msgt .= __('The Social Login Add On for Paid Memberships Pro requires either the <a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a> or <a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a> plugin to be installed and configured.', 'paid-memberships-pro');
 	}
 	if( $active_plugin_count ) {
@@ -144,15 +141,16 @@ add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level")
 function pmprosl_pmpro_user_fields() {
 	global $pmpro_level, $pmpro_error_fields;
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
-	// don't show this if we don't have a shortcode
-	if( empty( pmpro_getOption( 'social_login_shortcode' ) ) )
+	$login_shortcode = do_shortcode( pmprosl_get_login_shortcode() );
+	// don't show this if we don't have a shortcode or the shortcode is empty
+	if( empty( pmpro_getOption( 'social_login_shortcode' ) ) || empty( $login_shortcode ) )
 		return;
 	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields))
 	{
 		?>
 		<style>#pmpro_user_fields {display: none; }</style>
 		<div id="pmpro_social_login" class="pmpro_checkout">
-			<?php echo do_shortcode( pmprosl_get_login_shortcode() ); ?>
+			<?php echo $login_shortcode; ?>
 			<div class="pmpro_clear"></div>
 			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to create a username and password</a>','pmpro'); ?></div>
 		</div>
