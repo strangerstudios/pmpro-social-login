@@ -8,6 +8,13 @@ Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
+define( 'PMPROSL_VERSION', '0.3' );
+
+/**
+ * include admin notices 
+ */ 
+require_once( dirname(__FILE__) . '/includes/notices.php' );
+
 /**
  * Check what plugins are active and update settings.
  */
@@ -139,20 +146,20 @@ add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level")
 
 //add social login to the checkout page
 function pmprosl_pmpro_user_fields() {
-	global $pmpro_level, $pmpro_error_fields;
+	global $pmpro_level, $pmpro_error_fields, $pmpro_review;
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
 	$login_shortcode = do_shortcode( pmprosl_get_login_shortcode() );
 	// don't show this if we don't have a shortcode or the shortcode is empty
 	if( empty( pmpro_getOption( 'social_login_shortcode' ) ) || empty( $login_shortcode ) )
 		return;
-	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields))
+	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields) && empty($pmpro_review))
 	{
 		?>
 		<style>#pmpro_user_fields {display: none; }</style>
 		<div id="pmpro_social_login" class="pmpro_checkout">
 			<?php echo $login_shortcode; ?>
 			<div class="pmpro_clear"></div>
-			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to create a username and password</a>','pmpro'); ?></div>
+			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to login, create a username and password</a>','pmpro'); ?></div>
 		</div>
 		<script>
 			//show username and password fields 
