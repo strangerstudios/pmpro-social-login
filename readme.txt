@@ -1,8 +1,8 @@
 === Paid Memberships Pro - Social Login Add On ===
 Contributors: strangerstudios
 Tags: pmpro, paid memberships pro, members, social login
-Requires at least: 3.0
-Tested up to: 5.2.1
+Requires at least: 4.8
+Tested up to: 5.2.2
 Stable tag: .3
 
 Allow users to create membership account via social networks as configured via NextEnd Social Login or Super Socializer plugin.
