@@ -19,7 +19,11 @@ require_once( dirname(__FILE__) . '/includes/notices.php' );
  * Check what plugins are active and update settings.
  */
 function pmprosl_check_plugins() {
-	global $msg, $msgt;
+	// Don't waste resources on the frontend.
+	if( ! is_admin() ) {
+		return;
+	}
+
 	/**
 	 * Array of plugin arrays.
 	 * Required keys are name, shortcode, and a constant we can use to check if plugin is installed.
@@ -41,6 +45,7 @@ function pmprosl_check_plugins() {
 			'constant' => 'WORDPRESS_SOCIAL_LOGIN_ABS_PATH',
 		)
 	);
+	
 	$active_plugins = array();
 	foreach( $plugins as $plugin ) {
 		// is the plugin installed? if so, add to list of active plugins
@@ -48,27 +53,34 @@ function pmprosl_check_plugins() {
 			$active_plugins[] = $plugin;
 		}
 	}
+		
 	$active_plugin_count = count( $active_plugins );
+	
 	if( $active_plugin_count > 1 ) {
 		// more than one plugin installed, let's warn them
-		$msg = -1;
-		$msgt .= __("The following plugins are activated: <br/>", 'paid-memberships-pro');
+		$notice = __( "The following plugins are activated: <br/>", 'paid-memberships-pro');
 		for( $i = 0; $i < $active_plugin_count; $i++ ) {
-			$msgt .= $active_plugins[$i]['name'] . "<br/>";
+			$notice .= $active_plugins[$i]['name'] . "<br/>";
 		}
-		$msgt .= __("Paid Memberships Pro Social Login will use ", 'paid-memberships-pro') . $active_plugins[0]['name'];
-		$msgt .= __(" for social login integration. Deactivate the plugins you don't want to use or use the pmprosl_login_shortcode filter to change this behavior.", 'paid-memberships-pro');
+		$notice .= __( "Paid Memberships Pro Social Login will use ", 'paid-memberships-pro' ) . $active_plugins[0]['name'];
+		$notice .= __( " for social login integration. Deactivate the plugins you don't want to use or use the pmprosl_login_shortcode filter to change this behavior.", 'paid-memberships-pro' );
+	} elseif( $active_plugin_count < 1 ) {
+		// no plugins installed, warn about that
+		$notice = __( 'The Social Login Add On for Paid Memberships Pro requires either the <a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a> or <a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a> plugin to be installed and configured.', 'paid-memberships-pro' );
+	} else {
+		// Just one plugin installed. Remove the notice.
+		$notice = '';
 	}
-	// no plugins installed, warn about that
-	elseif( $active_plugin_count < 1 ) {
-		$msg = -1;
-		$msgt .= __('The Social Login Add On for Paid Memberships Pro requires either the <a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a> or <a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a> plugin to be installed and configured.', 'paid-memberships-pro');
-	}
+	
+	// Set the notice.
+	pmpro_setOption( 'social_login_notice', $notice );
+	
+	// Use first plugin we find.
 	if( $active_plugin_count ) {
-		pmpro_setOption('social_login_shortcode', $active_plugins[0]['shortcode'] );
+		pmpro_setOption( 'social_login_shortcode', $active_plugins[0]['shortcode'] );
 	}
 }
-add_action( 'plugins_loaded', 'pmprosl_check_plugins');
+add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
 
 /*
 	If a PMPROSL_DEFAULT_LEVEL constant is set
