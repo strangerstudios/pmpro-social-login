@@ -1,76 +1,74 @@
 <?php
 /*
-Plugin Name: Paid Memberships Pro - WordPress Social Login Add On
+Plugin Name: Paid Memberships Pro - Social Login Add On
 Plugin URI: http://www.paidmembershipspro.com/wp/pmpro-social-login/
-Description: Allow users to create membership account via social networks as configured via WordPress Social Login by Miled.
-Version: .2
+Description: Allow users to create membership account via social networks.
+Version: .3
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
 */
 
-/**
- * Include the TGM_Plugin_Activation class.
- */
-require_once dirname( __FILE__ ) . '/class-tgm-plugin-activation.php';
+define( 'PMPROSL_VERSION', '0.3' );
 
 /**
- * Register the required plugins for this theme.
+ * include admin notices 
+ */ 
+require_once( dirname(__FILE__) . '/includes/notices.php' );
+
+/**
+ * Check what plugins are active and update settings.
  */
-add_action( 'tgmpa_register', 'pmprosl_tgmpa_register' );
-function pmprosl_tgmpa_register() {
+function pmprosl_check_plugins() {
+	global $msg, $msgt;
 	/**
-	 * Array of plugin arrays. Required keys are name and slug.
-	 * If the source is NOT from the .org repo, then source is also required.
+	 * Array of plugin arrays.
+	 * Required keys are name, shortcode, and a constant we can use to check if plugin is installed.
 	 */
 	$plugins = array(
-		// Paid Memberships Pro
 		array(
-			'name' 		=> 'Paid Memberships Pro',
-			'slug' 		=> 'paid-memberships-pro',
-			'required' 	=> true
+		'name' => 'NextEnd Social Login',
+		'shortcode' => '[nextend_social_login]',
+		'constant' => 'NSL_PATH_FILE',
 		),
-		// WordPress Social Login
+		array( 
+			'name' => 'Super Socializer',
+			'shortcode' => '[TheChamp-Login]',
+			'constant' => 'THE_CHAMP_SS_VERSION',
+		),
 		array(
-			'name' 		=> 'WordPress Social Login',
-			'slug' 		=> 'wordpress-social-login',
-			'required' 	=> true
+			'name' => 'WordPress Social Login',
+			'shortcode' => '[wordpress_social_login]',
+			'constant' => 'WORDPRESS_SOCIAL_LOGIN_ABS_PATH',
 		)
 	);
-
-	// Change this to your theme text domain, used for internationalising strings
-	$theme_text_domain = 'pmpro';
-
-	$config = array(
-		'domain'       		=> $theme_text_domain,         	// Text domain - likely want to be the same as your theme.
-		'default_path' 		=> '',                         	// Default absolute path to pre-packaged plugins
-		'menu'         		=> 'install-required-plugins', 	// Menu slug
-		'has_notices'      	=> true,                       	// Show admin notices or not
-		'is_automatic'    	=> false,					   	// Automatically activate plugins after installation or not
-		'message' 			=> '',							// Message to output right before the plugins table
-		'strings'      		=> array(
-			'page_title'                       			=> __( 'Install Required Plugins', $theme_text_domain ),
-			'menu_title'                       			=> __( 'Install Plugins', $theme_text_domain ),
-			'installing'                       			=> __( 'Installing Plugin: %s', $theme_text_domain ), // %1$s = plugin name
-			'oops'                             			=> __( 'Something went wrong with the plugin API.', $theme_text_domain ),
-			'notice_can_install_required'     			=> _n_noop( 'PMPro Social Login requires the following plugin: %1$s.', 'PMPro Social Login requires the following plugins: %1$s.' ), // %1$s = plugin name(s)
-			'notice_can_install_recommended'			=> _n_noop( 'PMPro Social Login recommends the following plugin: %1$s.', 'PMPro Social Login recommends the following plugins: %1$s.' ), // %1$s = plugin name(s)
-			'notice_cannot_install'  					=> _n_noop( 'PMPro Social Login: Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of this site for help on getting the plugin installed.', 'PMPro Social Login: Sorry, but you do not have the correct permissions to install the %s plugins. Contact the administrator of this site for help on getting the plugins installed.' ), // %1$s = plugin name(s)
-			'notice_can_activate_required'    			=> _n_noop( 'PMPro Social Login: The following required plugin is currently inactive: %1$s.', 'PMPro Social Login: The following required plugins are currently inactive: %1$s.' ), // %1$s = plugin name(s)
-			'notice_can_activate_recommended'			=> _n_noop( 'PMPro Social Login: The following recommended plugin is currently inactive: %1$s.', 'PMPro Social Login: The following recommended plugins are currently inactive: %1$s.' ), // %1$s = plugin name(s)
-			'notice_cannot_activate' 					=> _n_noop( 'PMPro Social Login: Sorry, but you do not have the correct permissions to activate the %s plugin. Contact the administrator of this site for help on getting the plugin activated.', 'PMPro Social Login: Sorry, but you do not have the correct permissions to activate the %s plugins. Contact the administrator of this site for help on getting the plugins activated.' ), // %1$s = plugin name(s)
-			'notice_ask_to_update' 						=> _n_noop( 'PMPro Social Login: The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s.', 'PMPro Social Login: The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s.' ), // %1$s = plugin name(s)
-			'notice_cannot_update' 						=> _n_noop( 'PMPro Social Login: Sorry, but you do not have the correct permissions to update the %s plugin. Contact the administrator of this site for help on getting the plugin updated.', 'PMPro Social Login: Sorry, but you do not have the correct permissions to update the %s plugins. Contact the administrator of this site for help on getting the plugins updated.' ), // %1$s = plugin name(s)
-			'install_link' 					  			=> _n_noop( 'Begin installing plugin', 'Begin installing plugins' ),
-			'activate_link' 				  			=> _n_noop( 'Activate installed plugin', 'Activate installed plugins' ),
-			'return'                           			=> __( 'Return to Required Plugins Installer', $theme_text_domain ),
-			'plugin_activated'                 			=> __( 'Plugin activated successfully.', $theme_text_domain ),
-			'complete' 									=> __( 'All plugins installed and activated successfully. %s', $theme_text_domain ), // %1$s = dashboard link
-			'nag_type'									=> 'updated' // Determines admin notice type - can only be 'updated' or 'error'
-		)
-	);
-
-	tgmpa( $plugins, $config );
+	$active_plugins = array();
+	foreach( $plugins as $plugin ) {
+		// is the plugin installed? if so, add to list of active plugins
+		if( defined( $plugin['constant'] ) ) {
+			$active_plugins[] = $plugin;
+		}
+	}
+	$active_plugin_count = count( $active_plugins );
+	if( $active_plugin_count > 1 ) {
+		// more than one plugin installed, let's warn them
+		$msg = -1;
+		$msgt .= __("The following plugins are activated: <br/>", 'paid-memberships-pro');
+		for( $i = 0; $i < $active_plugin_count; $i++ ) {
+			$msgt .= $active_plugins[$i]['name'] . "<br/>";
+		}
+		$msgt .= __("Paid Memberships Pro Social Login will use ", 'paid-memberships-pro') . $active_plugins[0]['name'];
+		$msgt .= __(" for social login integration. Deactivate the plugins you don't want to use or use the pmprosl_login_shortcode filter to change this behavior.", 'paid-memberships-pro');
+	}
+	// no plugins installed, warn about that
+	elseif( $active_plugin_count < 1 ) {
+		$msg = -1;
+		$msgt .= __('The Social Login Add On for Paid Memberships Pro requires either the <a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a> or <a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a> plugin to be installed and configured.', 'paid-memberships-pro');
+	}
+	if( $active_plugin_count ) {
+		pmpro_setOption('social_login_shortcode', $active_plugins[0]['shortcode'] );
+	}
 }
+add_action( 'plugins_loaded', 'pmprosl_check_plugins');
 
 /*
 	If a PMPROSL_DEFAULT_LEVEL constant is set
@@ -148,16 +146,20 @@ add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level")
 
 //add social login to the checkout page
 function pmprosl_pmpro_user_fields() {
-	global $pmpro_level, $pmpro_error_fields;
+	global $pmpro_level, $pmpro_error_fields, $pmpro_review;
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
-	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields))
+	$login_shortcode = do_shortcode( pmprosl_get_login_shortcode() );
+	// don't show this if we don't have a shortcode or the shortcode is empty
+	if( empty( pmpro_getOption( 'social_login_shortcode' ) ) || empty( $login_shortcode ) )
+		return;
+	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields) && empty($pmpro_review))
 	{
 		?>
 		<style>#pmpro_user_fields {display: none; }</style>
 		<div id="pmpro_social_login" class="pmpro_checkout">
-			<?php echo do_shortcode( '[wordpress_social_login]' ); ?>
+			<?php echo $login_shortcode; ?>
 			<div class="pmpro_clear"></div>
-			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to create a username and password</a>','pmpro'); ?></div>
+			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to login, create a username and password</a>','pmpro'); ?></div>
 		</div>
 		<script>
 			//show username and password fields 
@@ -171,3 +173,24 @@ function pmprosl_pmpro_user_fields() {
 	}
 }
 add_action('pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields');
+
+// Choose which shortcode to display
+function pmprosl_get_login_shortcode() {
+	global $wp, $pmpro_pages;
+	$plugin = pmpro_getOption( 'social_login_shortcode' );
+	// if using NextEnd and coming from checkout, make sure we redirect back to checkout
+	if($plugin === '[nextend_social_login]' && is_page( $pmpro_pages['checkout'] ) ){
+		$plugin === '[nextend_social_login redirect=' . 	home_url(add_query_arg(array($_GET), $wp->request)) . ']';
+	}
+	$plugin = apply_filters( 'pmprosl_login_shortcode', $plugin );
+	return $plugin;
+}
+
+// use the requested redirect if we're logging in with NextEnd
+function pmprosl_preserve_redirect($redirect_to, $request, $user) {
+	if( isset($_REQUEST["loginSocial"]) ) {
+		$redirect_to = $request;
+	}
+	return $redirect_to;
+}
+add_filter('pmpro_login_redirect_url', 'pmprosl_preserve_redirect', 10, 3);
