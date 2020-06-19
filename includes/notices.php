@@ -1,6 +1,11 @@
 <?php
 
 function pmprosl_admin_init_notifications() {
+
+	if ( ! defined( 'PMPRO_VERSION' ) ) {
+		return;
+	}
+
 	// we want to avoid notices on some screens
 	$script           = basename( $_SERVER['SCRIPT_NAME'] );
 	$maybe_installing = $script == 'update.php' || $script == 'plugins.php';
