@@ -20,7 +20,7 @@ require_once( dirname(__FILE__) . '/includes/notices.php' );
  */
 function pmprosl_check_plugins() {
 	// Don't waste resources on the frontend.
-	if( ! is_admin() ) {
+	if( ! is_admin() || !function_exists( 'pmpro_setOption' ) ) {
 		return;
 	}
 
