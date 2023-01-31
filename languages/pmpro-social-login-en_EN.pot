@@ -1,0 +1,60 @@
+# Copyright (C) 2023 Stranger Studios
+# This file is distributed under the same license as the Paid Memberships Pro - Social Login Add On.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Paid Memberships Pro - Multiple Memberships per User 0.8.2\n"
+"Report-Msgid-Bugs-To: info@paidmembershipspro.com\n"
+"Last-Translator: Paid Memberships Pro <info@paidmembershipspro.com>\n"
+"Language-Team: Paid Memberships Pro <info@paidmembershipspro.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: pmpro-social-login.php:63
+msgid "The following plugins are activated: "
+msgstr ""
+
+#: pmpro-social-login.php:67
+msgid "Paid Memberships Pro Social Login will use "
+msgstr ""
+
+#: pmpro-social-login.php:68
+msgid ""
+" for social login integration. Deactivate the plugins you don't want to use "
+"or use the pmprosl_login_shortcode filter to change this behavior."
+msgstr ""
+
+#: pmpro-social-login.php:71
+msgid ""
+"The Social Login Add On for Paid Memberships Pro requires either the <a href="
+"\"https://wordpress.org/plugins/nextend-facebook-connect/\">NextEnd Social "
+"Login</a> or <a href=\"https://wordpress.org/plugins/super-socializer/"
+"\">Super Socializer</a> plugin to be installed and configured."
+msgstr ""
+
+#: pmpro-social-login.php:122
+msgid "Social Login"
+msgstr ""
+
+#: pmpro-social-login.php:124
+msgid ""
+"Make this the default level to users logging in for the first time via "
+"Social Login"
+msgstr ""
+
+#: pmpro-social-login.php:126
+msgid "Hide Social Login at Checkout for this Level"
+msgstr ""
+
+#: pmpro-social-login.php:176
+#, php-format
+msgid "or %s"
+msgstr ""
+
+#: pmpro-social-login.php:176
+msgid "Click here to login, create a username and password"
+msgstr ""
