@@ -133,7 +133,7 @@ function pmprosl_pmpro_membership_level_after_other_settings()
 	$social_login_default_level = get_option('pmpro_social_login_default_level');
 	$hide_social_login = get_option("level_" . $level . "_hide_social_login");
 	?>
-	<h3 class="topborder"><?php esc_html_e('Social Login','pmpro-social-login'); ?></h3>
+	<h2 class="topborder"><?php esc_html_e('Social Login','pmpro-social-login'); ?></h2>
 	
 	<p><label for="social_login_default_level"><input name="social_login_default_level" type="checkbox" id="social_login_default_level" <?php checked( $social_login_default_level, $level ); ?> value="1"> <?php esc_html_e('Make this the default level to users logging in for the first time via Social Login','pmpro-social-login'); ?></label></p>
 	
