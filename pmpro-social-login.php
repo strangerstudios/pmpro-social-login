@@ -6,9 +6,21 @@ Description: Allow users to create membership account via social networks.
 Version: .3
 Author: Stranger Studios
 Author URI: http://www.strangerstudios.com
+Text Domain: pmpro-social-login
+Domain Path: /languages
 */
 
 define( 'PMPROSL_VERSION', '0.3' );
+
+/**
+ * pmprommpu_load_plugin_text_domain
+ *
+ * @since 0.6.5
+ */
+function pmprosl_load_plugin_text_domain() {
+	load_plugin_textdomain( 'pmpro-social-login', false, dirname( __FILE__ ) . '/languages' );
+}
+add_action( 'init', 'pmprosl_load_plugin_text_domain' );
 
 /**
  * include admin notices 
@@ -20,7 +32,7 @@ require_once( dirname(__FILE__) . '/includes/notices.php' );
  */
 function pmprosl_check_plugins() {
 	// Don't waste resources on the frontend.
-	if( ! is_admin() ) {
+	if( ! is_admin() || ! defined( 'PMPRO_VERSION') ) {
 		return;
 	}
 
@@ -58,26 +70,26 @@ function pmprosl_check_plugins() {
 	
 	if( $active_plugin_count > 1 ) {
 		// more than one plugin installed, let's warn them
-		$notice = __( "The following plugins are activated: <br/>", 'paid-memberships-pro');
+		$notice = esc_html__( "The following plugins are activated", 'pmpro-social-login') . ":<br/>";
 		for( $i = 0; $i < $active_plugin_count; $i++ ) {
 			$notice .= $active_plugins[$i]['name'] . "<br/>";
 		}
-		$notice .= __( "Paid Memberships Pro Social Login will use ", 'paid-memberships-pro' ) . $active_plugins[0]['name'];
-		$notice .= __( " for social login integration. Deactivate the plugins you don't want to use or use the pmprosl_login_shortcode filter to change this behavior.", 'paid-memberships-pro' );
+		$notice .= sprintf( esc_html__( 'Paid Memberships Pro Social Login will use %s for social login integration. Deactivate the plugins you don\'t want to use or use the pmprosl_login_shortcode filter to change this behavior.', 'pmpro-social-login' ), esc_html( $active_plugins[0]['name'] ) );
 	} elseif( $active_plugin_count < 1 ) {
 		// no plugins installed, warn about that
-		$notice = __( 'The Social Login Add On for Paid Memberships Pro requires either the <a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a> or <a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a> plugin to be installed and configured.', 'paid-memberships-pro' );
+		/* translators: %1$s is a link to the NextEnd plugin, %2$s is a link to the Super Socializer plugin */
+		$notice = sprintf( esc_html__( 'The Social Login Add On for Paid Memberships Pro requires either the %1$s or %2$s plugin to be installed and configured.', 'pmpro-social-login' ), '<a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a>', '<a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a>' );
 	} else {
 		// Just one plugin installed. Remove the notice.
 		$notice = '';
 	}
 	
 	// Set the notice.
-	pmpro_setOption( 'social_login_notice', $notice );
+	update_option( 'pmpro_social_login_notice', $notice );
 	
 	// Use first plugin we find.
 	if( $active_plugin_count ) {
-		pmpro_setOption( 'social_login_shortcode', $active_plugins[0]['shortcode'] );
+		update_option( 'pmpro_social_login_shortcode', $active_plugins[0]['shortcode'] );
 	}
 }
 add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
@@ -89,6 +101,10 @@ add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
 */
 function pmprosl_pmpro_default_registration_level($user_id) {
 	global $pmpro_level;	
+
+	if ( ! defined( 'PMPRO_VERSION' ) ) {
+		return;
+	}
 	
 	//if default is set and we're not otherwise checking out
 	$default_level = get_option('pmpro_social_login_default_level');
@@ -117,11 +133,11 @@ function pmprosl_pmpro_membership_level_after_other_settings()
 	$social_login_default_level = get_option('pmpro_social_login_default_level');
 	$hide_social_login = get_option("level_" . $level . "_hide_social_login");
 	?>
-	<h2 class="topborder"><?php _e('Social Login','pmprosl'); ?></h2>
+	<h2 class="topborder"><?php esc_html_e('Social Login','pmpro-social-login'); ?></h2>
 	
-	<p><label for="social_login_default_level"><input name="social_login_default_level" type="checkbox" id="social_login_default_level" <?php checked( $social_login_default_level, $level ); ?> value="1"> <?php _e('Make this the default level to users logging in for the first time via Social Login','pmprosl'); ?></label></p>
+	<p><label for="social_login_default_level"><input name="social_login_default_level" type="checkbox" id="social_login_default_level" <?php checked( $social_login_default_level, $level ); ?> value="1"> <?php esc_html_e('Make this the default level to users logging in for the first time via Social Login','pmpro-social-login'); ?></label></p>
 	
-	<p><label for="hide_social_login"><input name="hide_social_login" type="checkbox" id="hide_social_login" <?php checked( $hide_social_login, 1 ); ?> value="1"> <?php _e('Hide Social Login at Checkout for this Level','pmprosl'); ?></label></p>
+	<p><label for="hide_social_login"><input name="hide_social_login" type="checkbox" id="hide_social_login" <?php checked( $hide_social_login, 1 ); ?> value="1"> <?php esc_html_e('Hide Social Login at Checkout for this Level','pmpro-social-login'); ?></label></p>
 	<?php
 }
 add_action("pmpro_membership_level_after_other_settings", "pmprosl_pmpro_membership_level_after_other_settings");
@@ -162,7 +178,7 @@ function pmprosl_pmpro_user_fields() {
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
 	$login_shortcode = do_shortcode( pmprosl_get_login_shortcode() );
 	// don't show this if we don't have a shortcode or the shortcode is empty
-	if( empty( pmpro_getOption( 'social_login_shortcode' ) ) || empty( $login_shortcode ) )
+	if( empty( get_option( 'pmpro_social_login_shortcode' ) ) || empty( $login_shortcode ) )
 		return;
 	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields) && empty($pmpro_review))
 	{
@@ -171,7 +187,7 @@ function pmprosl_pmpro_user_fields() {
 		<div id="pmpro_social_login" class="pmpro_checkout">
 			<?php echo $login_shortcode; ?>
 			<div class="pmpro_clear"></div>
-			<div id="pmpro_user_fields_show"><?php _e('or, <a id="pmpro_user_fields_a" href="javascript:void()">Click here to login, create a username and password</a>','pmpro'); ?></div>
+			<div id="pmpro_user_fields_show"><?php esc_html_e( 'or', 'pmpro-social-login' ); ?> <a id="pmpro_user_fields_a" href="javascript:void()"><?php esc_html_e( 'Click here to login, create a username and password', 'pmpro-social-login' ); ?></a></div>
 		</div>
 		<script>
 			//show username and password fields 
@@ -189,7 +205,7 @@ add_action('pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields');
 // Choose which shortcode to display
 function pmprosl_get_login_shortcode() {
 	global $wp, $pmpro_pages;
-	$plugin = pmpro_getOption( 'social_login_shortcode' );
+	$plugin = get_option( 'pmpro_social_login_shortcode' );
 	// if using NextEnd and coming from checkout, make sure we redirect back to checkout
 	if($plugin === '[nextend_social_login]' && is_page( $pmpro_pages['checkout'] ) ){
 		$plugin === '[nextend_social_login redirect=' . 	home_url(add_query_arg(array($_GET), $wp->request)) . ']';
