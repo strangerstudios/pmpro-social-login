@@ -18,7 +18,7 @@ define( 'PMPROSL_VERSION', '0.3' );
  * @since 0.6.5
  */
 function pmprosl_load_plugin_text_domain() {
-	load_plugin_textdomain( 'pmpro-social-login', false, basename( PMPROMMPU_DIR ) . '/languages' );
+	load_plugin_textdomain( 'pmpro-social-login', false, dirname( __FILE__ ) . '/languages' );
 }
 add_action( 'init', 'pmprosl_load_plugin_text_domain' );
 
