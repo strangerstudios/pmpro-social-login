@@ -20,7 +20,7 @@ require_once( dirname(__FILE__) . '/includes/notices.php' );
  */
 function pmprosl_check_plugins() {
 	// Don't waste resources on the frontend.
-	if( ! is_admin() ) {
+	if( ! is_admin() || ! defined( 'PMPRO_VERSION') ) {
 		return;
 	}
 
@@ -89,6 +89,10 @@ add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
 */
 function pmprosl_pmpro_default_registration_level($user_id) {
 	global $pmpro_level;	
+
+	if ( ! defined( 'PMPRO_VERSION' ) ) {
+		return;
+	}
 	
 	//if default is set and we're not otherwise checking out
 	$default_level = get_option('pmpro_social_login_default_level');
