@@ -85,11 +85,11 @@ function pmprosl_check_plugins() {
 	}
 	
 	// Set the notice.
-	pmpro_setOption( 'social_login_notice', $notice );
+	update_option( 'pmpro_social_login_notice', $notice );
 	
 	// Use first plugin we find.
 	if( $active_plugin_count ) {
-		pmpro_setOption( 'social_login_shortcode', $active_plugins[0]['shortcode'] );
+		update_option( 'pmpro_social_login_shortcode', $active_plugins[0]['shortcode'] );
 	}
 }
 add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
@@ -178,7 +178,7 @@ function pmprosl_pmpro_user_fields() {
 	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
 	$login_shortcode = do_shortcode( pmprosl_get_login_shortcode() );
 	// don't show this if we don't have a shortcode or the shortcode is empty
-	if( empty( pmpro_getOption( 'social_login_shortcode' ) ) || empty( $login_shortcode ) )
+	if( empty( get_option( 'pmpro_social_login_shortcode' ) ) || empty( $login_shortcode ) )
 		return;
 	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields) && empty($pmpro_review))
 	{
@@ -205,7 +205,7 @@ add_action('pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields');
 // Choose which shortcode to display
 function pmprosl_get_login_shortcode() {
 	global $wp, $pmpro_pages;
-	$plugin = pmpro_getOption( 'social_login_shortcode' );
+	$plugin = get_option( 'pmpro_social_login_shortcode' );
 	// if using NextEnd and coming from checkout, make sure we redirect back to checkout
 	if($plugin === '[nextend_social_login]' && is_page( $pmpro_pages['checkout'] ) ){
 		$plugin === '[nextend_social_login redirect=' . 	home_url(add_query_arg(array($_GET), $wp->request)) . ']';
