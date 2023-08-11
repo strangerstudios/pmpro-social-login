@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: pmpro, paid memberships pro, members, social login
 Requires at least: 4.8
-Tested up to: 5.2.2
-Stable tag: .3
+Tested up to: 6.2
+Stable tag: 1.0
 
 Allow users to create membership account via social networks as configured via NextEnd Social Login or Super Socializer plugin.
 
@@ -31,6 +31,12 @@ Requires Paid Memberships Pro and either NextEnd Social Login or Super Socialize
 3. To set the default level to users logging in for the first time via Social Login, edit the Membership Level and check the box to "Make this the default level to users logging in for the first time via Social Login".
 
 == Changelog ==
+= 1.0 - 2023-08-11 =
+* BUG FIX/ENHANCEMENT: Updated localization and escaping of strings. #14 (@JarrydLong)
+* BUG FIX/ENHANCEMENT: Updated some `<h3>` tags to `<h2>` tags for better accessibility. #17 (@ipokkel)
+* BUG FIX: Fixed PHP errors when the core Paid Memberships Pro plugin is not active. #13 (@JarrydLong)
+* REFACTOR: Now using `get_option()` instead of `pmpro_getOption()` to get options. #16 (@JarrydLong)
+
 = .3 =
 * ENHANCEMENT: Now supports NextEnd Social Login and Super Socializer plugins.
 * CHANGE: Wordpress Social Login support is deprecated as the plugin is no longer being actively maintained. Will still use WSL for login if it's the only supported social login plugin installed.
