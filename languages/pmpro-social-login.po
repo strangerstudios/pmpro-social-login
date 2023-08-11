@@ -14,47 +14,6 @@ msgstr ""
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: pmpro-social-login\n"
 
-#: pmpro-social-login.php:63
-msgid "The following plugins are activated: "
-msgstr ""
-
-#: pmpro-social-login.php:67
-msgid "Paid Memberships Pro Social Login will use "
-msgstr ""
-
-#: pmpro-social-login.php:68
-msgid " for social login integration. Deactivate the plugins you don't want to use or use the pmprosl_login_shortcode filter to change this behavior."
-msgstr ""
-
-#: pmpro-social-login.php:71
-msgid "The Social Login Add On for Paid Memberships Pro requires either the <a href=\"https://wordpress.org/plugins/nextend-facebook-connect/\">NextEnd Social Login</a> or <a href=\"https://wordpress.org/plugins/super-socializer/\">Super Socializer</a> plugin to be installed and configured."
-msgstr ""
-
-#: pmpro-social-login.php:122
-#: pmpro-social-login.php:136
-msgid "Social Login"
-msgstr ""
-
-#: pmpro-social-login.php:124
-#: pmpro-social-login.php:138
-msgid "Make this the default level to users logging in for the first time via Social Login"
-msgstr ""
-
-#: pmpro-social-login.php:126
-#: pmpro-social-login.php:140
-msgid "Hide Social Login at Checkout for this Level"
-msgstr ""
-
-#: pmpro-social-login.php:176
-#, php-format
-msgid "or %s"
-msgstr ""
-
-#: pmpro-social-login.php:176
-#: pmpro-social-login.php:190
-msgid "Click here to login, create a username and password"
-msgstr ""
-
 #. Plugin Name of the plugin
 msgid "Paid Memberships Pro - Social Login Add On"
 msgstr ""
@@ -88,6 +47,22 @@ msgstr ""
 msgid "The Social Login Add On for Paid Memberships Pro requires either the %1$s or %2$s plugin to be installed and configured."
 msgstr ""
 
+#: pmpro-social-login.php:136
+msgid "Social Login"
+msgstr ""
+
+#: pmpro-social-login.php:138
+msgid "Make this the default level to users logging in for the first time via Social Login"
+msgstr ""
+
+#: pmpro-social-login.php:140
+msgid "Hide Social Login at Checkout for this Level"
+msgstr ""
+
 #: pmpro-social-login.php:190
 msgid "or"
+msgstr ""
+
+#: pmpro-social-login.php:190
+msgid "Click here to login, create a username and password"
 msgstr ""
