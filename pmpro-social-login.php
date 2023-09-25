@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Paid Memberships Pro - Social Login Add On
-Plugin URI: http://www.paidmembershipspro.com/wp/pmpro-social-login/
+Plugin URI: https://www.paidmembershipspro.com/add-ons/social-login-add-on/
 Description: Allow users to create membership account via social networks.
 Version: 1.0
 Author: Stranger Studios

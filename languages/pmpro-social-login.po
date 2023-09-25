@@ -19,7 +19,7 @@ msgid "Paid Memberships Pro - Social Login Add On"
 msgstr ""
 
 #. Plugin URI of the plugin
-msgid "http://www.paidmembershipspro.com/wp/pmpro-social-login/"
+msgid "https://www.paidmembershipspro.com/add-ons/social-login-add-on/"
 msgstr ""
 
 #. Description of the plugin
