@@ -124,7 +124,8 @@ function pmprosl_pmpro_default_registration_level($user_id) {
 		$pmproemail->sendCheckoutAdminEmail($user, false);
 	}
 }
-add_action('wsl_hook_process_login_after_wp_insert_user', 'pmprosl_pmpro_default_registration_level');
+add_action( 'wsl_hook_process_login_after_wp_insert_user', 'pmprosl_pmpro_default_registration_level' );
+add_action( 'nsl_register_new_user', 'pmprosl_pmpro_default_registration_level' ); // Nextend Social Login new user hook.
 
 //checkbox to allow social login for this level on edit level page
 function pmprosl_pmpro_membership_level_after_other_settings()
@@ -175,32 +176,44 @@ add_action("pmpro_save_membership_level", "pmprosl_pmpro_save_membership_level")
 //add social login to the checkout page
 function pmprosl_pmpro_user_fields() {
 	global $pmpro_level, $pmpro_error_fields, $pmpro_review;
-	$hide_social_login = get_option("level_" . $pmpro_level->id . "_hide_social_login");
+	$hide_social_login = get_option( "level_" . $pmpro_level->id . "_hide_social_login" );
 	$login_shortcode = do_shortcode( pmprosl_get_login_shortcode() );
+
 	// don't show this if we don't have a shortcode or the shortcode is empty
-	if( empty( get_option( 'pmpro_social_login_shortcode' ) ) || empty( $login_shortcode ) )
+	if ( empty( get_option( 'pmpro_social_login_shortcode' ) ) || empty( $login_shortcode ) ) {
 		return;
-	if(empty($hide_social_login) && !is_user_logged_in() && empty($pmpro_error_fields) && empty($pmpro_review))
-	{
+	}
+
+	if ( empty( $hide_social_login ) && !is_user_logged_in() && empty( $pmpro_error_fields ) && empty( $pmpro_review ) ) {
 		?>
-		<style>#pmpro_user_fields {display: none; }</style>
-		<div id="pmpro_social_login" class="pmpro_checkout">
-			<?php echo $login_shortcode; ?>
-			<div class="pmpro_clear"></div>
-			<div id="pmpro_user_fields_show"><?php esc_html_e( 'or', 'pmpro-social-login' ); ?> <a id="pmpro_user_fields_a" href="javascript:void()"><?php esc_html_e( 'Click here to login, create a username and password', 'pmpro-social-login' ); ?></a></div>
-		</div>
+		<style>#pmpro_user_fields { display: none; }</style>
+		<fieldset id="pmpro_social_login" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_fieldset' ) ); ?>">
+			<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card' ) ); ?>">
+				<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card_content' ) ); ?>">
+					<legend class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_legend', 'pmpro_social_login' ) ); ?>"><h2 class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_heading pmpro_font-large', 'pmpro_social_login' ) ); ?>"><?php esc_html_e( 'Sign In', 'pmpro-social-login' ); ?></h2></legend>
+					<p class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_social_login_help' ) ); ?>"><?php esc_html_e( 'You can sign in using your social media accounts for a faster and more convenient experience. Click on one of the buttons below to log in with your preferred platform.', 'pmpro-social-login' ); ?></p>
+					<div id="pmpro_social_login" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_checkout', 'pmpro_social_login' ) ); ?>">
+						<?php echo $login_shortcode; ?>
+						<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_clear' ) ); ?>"></div>
+						
+					</div>
+				</div>
+				<div id="pmpro_card_actions-social_login" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card_actions', 'pmpro_social_login' ) ); ?>"><div id="pmpro_user_fields_show"><?php echo '<a id="pmpro_user_fields_a" href="javascript:void()">' . esc_html__( 'Click here to login or create a username and password', 'pmpro-social-login' ) . '</a>' ; ?></div></div>
+			</div>
+		</fieldset>
 		<script>
 			//show username and password fields 
 			jQuery('#pmpro_user_fields_a').attr('href', 'javascript:void(0);');
 			jQuery('#pmpro_user_fields_a').click(function() {
 				jQuery('#pmpro_user_fields').show();
 				jQuery('#pmpro_user_fields_show').hide();
+				jQuery('#pmpro_card_actions-social_login').hide();
 			});
 		</script>	
 		<?php
 	}
 }
-add_action('pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields');
+add_action( 'pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields' );
 
 // Choose which shortcode to display
 function pmprosl_get_login_shortcode() {
@@ -221,4 +234,43 @@ function pmprosl_preserve_redirect($redirect_to, $request, $user) {
 	}
 	return $redirect_to;
 }
-add_filter('pmpro_login_redirect_url', 'pmprosl_preserve_redirect', 10, 3);
+add_filter( 'pmpro_login_redirect_url', 'pmprosl_preserve_redirect', 10, 3 );
+
+/**
+ * Improve Nextend Social Login compatibility if showing on the login form.
+ * @since TBD
+ */
+function pmprosl_nsl_login_form_tweaks( $content, $args ) {
+	
+	// Only load on the PMPro Login page.
+	if ( ! is_page( pmpro_getOption( 'pmpro_login_page_id' ) ) ) {
+		return $content;
+	}
+
+	// Bail if Nextend Social Login isn't installed.
+	if ( ! class_exists( 'NextendSocialLogin' ) ) {
+		return $content;
+	}
+
+	if ( NextendSocialLogin::$settings->get('show_embedded_login_form') != 'hide' ) {
+		remove_filter( 'login_form_bottom', 'NextendSocialLogin::filterAddEmbeddedLoginFormButtons' );
+		
+		// Let's add our own style and "OR" separator.
+		?>
+			<style>#pmpro_login .nsl-container-buttons{width:100%;}</style>
+		<?php
+		$content .= '<br>';
+		$content .= '<div style="display: flex; align-items: center; text-align: center;">
+						<div style="flex: 1; height: 1px; background-color: lightgrey;"></div>
+							<span style="margin: 0 10px; color: grey;">' . esc_html__( 'OR', 'pmpro-social-login' ) . '</span>
+						<div style="flex: 1; height: 1px; background-color: lightgrey;"></div>
+					</div>';
+
+		// Put the Nextend Social Login filter back.
+		add_filter( 'login_form_bottom', 'NextendSocialLogin::filterAddEmbeddedLoginFormButtons' );
+	}
+
+	return $content;
+
+}
+add_action( 'login_form_bottom', 'pmprosl_nsl_login_form_tweaks', 5, 2 );
