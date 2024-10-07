@@ -42,7 +42,7 @@ function pmprosl_check_plugins() {
 	 */
 	$plugins = array(
 		array(
-		'name' => 'NextEnd Social Login',
+		'name' => 'Nextend Social Login',
 		'shortcode' => '[nextend_social_login]',
 		'constant' => 'NSL_PATH_FILE',
 		),
@@ -77,8 +77,8 @@ function pmprosl_check_plugins() {
 		$notice .= sprintf( esc_html__( 'Paid Memberships Pro Social Login will use %s for social login integration. Deactivate the plugins you don\'t want to use or use the pmprosl_login_shortcode filter to change this behavior.', 'pmpro-social-login' ), esc_html( $active_plugins[0]['name'] ) );
 	} elseif( $active_plugin_count < 1 ) {
 		// no plugins installed, warn about that
-		/* translators: %1$s is a link to the NextEnd plugin, %2$s is a link to the Super Socializer plugin */
-		$notice = sprintf( esc_html__( 'The Social Login Add On for Paid Memberships Pro requires either the %1$s or %2$s plugin to be installed and configured.', 'pmpro-social-login' ), '<a href="https://wordpress.org/plugins/nextend-facebook-connect/">NextEnd Social Login</a>', '<a href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a>' );
+		/* translators: %1$s is a link to the Nextend plugin, %2$s is a link to the Super Socializer plugin */
+		$notice = sprintf( esc_html__( 'The Social Login Add On for Paid Memberships Pro requires either the %1$s or %2$s plugin to be installed and configured.', 'pmpro-social-login' ), '<a target="_blank" href="https://wordpress.org/plugins/nextend-facebook-connect/">Nextend Social Login</a>', '<a target="_blank" href="https://wordpress.org/plugins/super-socializer/">Super Socializer</a>' );
 	} else {
 		// Just one plugin installed. Remove the notice.
 		$notice = '';
@@ -94,11 +94,9 @@ function pmprosl_check_plugins() {
 }
 add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
 
-/*
-	If a PMPROSL_DEFAULT_LEVEL constant is set
-	give new users logging in and registering
-	via social login that default level.
-*/
+/**
+ * Check if a default level is set and if so, set it for new users created via social login.
+ */
 function pmprosl_pmpro_default_registration_level($user_id) {
 	global $pmpro_level;	
 
@@ -128,20 +126,41 @@ add_action( 'wsl_hook_process_login_after_wp_insert_user', 'pmprosl_pmpro_defaul
 add_action( 'nsl_register_new_user', 'pmprosl_pmpro_default_registration_level' ); // Nextend Social Login new user hook.
 
 //checkbox to allow social login for this level on edit level page
-function pmprosl_pmpro_membership_level_after_other_settings()
+function pmprosl_pmpro_membership_level_before_content_settings()
 {
 	$level = $_REQUEST['edit'];	
 	$social_login_default_level = get_option('pmpro_social_login_default_level');
 	$hide_social_login = get_option("level_" . $level . "_hide_social_login");
 	?>
-	<h2 class="topborder"><?php esc_html_e('Social Login','pmpro-social-login'); ?></h2>
-	
-	<p><label for="social_login_default_level"><input name="social_login_default_level" type="checkbox" id="social_login_default_level" <?php checked( $social_login_default_level, $level ); ?> value="1"> <?php esc_html_e('Make this the default level to users logging in for the first time via Social Login','pmpro-social-login'); ?></label></p>
-	
-	<p><label for="hide_social_login"><input name="hide_social_login" type="checkbox" id="hide_social_login" <?php checked( $hide_social_login, 1 ); ?> value="1"> <?php esc_html_e('Hide Social Login at Checkout for this Level','pmpro-social-login'); ?></label></p>
+	<div id="social-login-settings" class="pmpro_section" data-visibility="shown" data-activated="true">
+		<div class="pmpro_section_toggle">
+			<button class="pmpro_section-toggle-button" type="button" aria-expanded="true">
+				<span class="dashicons dashicons-arrow-up-alt2"></span>
+				<?php esc_html_e( 'Social Login Settings', 'pmpro-approvals' ); ?>
+			</button>
+		</div>
+		<div class="pmpro_section_inside">
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row" valign="top"><?php esc_html_e( 'Default Level', 'pmpro-social-login' ); ?></th>
+						<td>
+							<label for="social_login_default_level"><input name="social_login_default_level" type="checkbox" id="social_login_default_level" <?php checked( $social_login_default_level, $level ); ?> value="1"> <?php esc_html_e('Make this the default level for users who log in the first time via social login.','pmpro-social-login'); ?></label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row" valign="top"><?php esc_html_e( 'Hide Social Login', 'pmpro-social-login' ); ?></th>
+						<td>
+							<label for="hide_social_login"><input name="hide_social_login" type="checkbox" id="hide_social_login" <?php checked( $hide_social_login, 1 ); ?> value="1"> <?php esc_html_e('Hide social login at checkout for this membership level.','pmpro-social-login'); ?></label>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 	<?php
 }
-add_action("pmpro_membership_level_after_other_settings", "pmprosl_pmpro_membership_level_after_other_settings");
+add_action("pmpro_membership_level_before_content_settings", "pmprosl_pmpro_membership_level_before_content_settings");
 
 //update the setting on save
 function pmprosl_pmpro_save_membership_level($saveid)
@@ -219,7 +238,7 @@ add_action( 'pmpro_checkout_after_pricing_fields','pmprosl_pmpro_user_fields' );
 function pmprosl_get_login_shortcode() {
 	global $wp, $pmpro_pages;
 	$plugin = get_option( 'pmpro_social_login_shortcode' );
-	// if using NextEnd and coming from checkout, make sure we redirect back to checkout
+	// if using Nextend and coming from checkout, make sure we redirect back to checkout
 	if($plugin === '[nextend_social_login]' && is_page( $pmpro_pages['checkout'] ) ){
 		$plugin === '[nextend_social_login redirect=' . 	home_url(add_query_arg(array($_GET), $wp->request)) . ']';
 	}
@@ -227,7 +246,7 @@ function pmprosl_get_login_shortcode() {
 	return $plugin;
 }
 
-// use the requested redirect if we're logging in with NextEnd
+// use the requested redirect if we're logging in with Nextend
 function pmprosl_preserve_redirect($redirect_to, $request, $user) {
 	if( isset($_REQUEST["loginSocial"]) ) {
 		$redirect_to = $request;
