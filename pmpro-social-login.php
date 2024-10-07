@@ -210,13 +210,13 @@ function pmprosl_pmpro_user_fields() {
 			<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card' ) ); ?>">
 				<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card_content' ) ); ?>">
 					<legend class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_legend', 'pmpro_social_login' ) ); ?>"><h2 class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_heading pmpro_font-large', 'pmpro_social_login' ) ); ?>"><?php esc_html_e( 'Sign In', 'pmpro-social-login' ); ?></h2></legend>
-					<p class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_social_login_help' ) ); ?>"><?php esc_html_e( 'You can sign in using your social media accounts for a faster and more convenient experience. Click on one of the buttons below to log in with your preferred platform.', 'pmpro-social-login' ); ?></p>
-					<div id="pmpro_social_login" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_checkout', 'pmpro_social_login' ) ); ?>">
-						<?php echo $login_shortcode; ?>
-						<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_clear' ) ); ?>"></div>
-						
-					</div>
-				</div>
+					<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_fields' ) ); ?>">
+						<p class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_fields-description pmpro_social_login_help' ) ); ?>"><?php esc_html_e( 'You can sign in using your social media accounts for a faster and more convenient experience. Click on one of the buttons below to log in with your preferred platform.', 'pmpro-social-login' ); ?></p>
+						<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_field' ) ); ?>">
+							<?php echo $login_shortcode; ?>
+						</div>
+					</div> <!-- end pmpro_form_fields -->
+				</div> <!-- end pmpro_card_content -->
 				<div id="pmpro_card_actions-social_login" class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_card_actions', 'pmpro_social_login' ) ); ?>"><div id="pmpro_user_fields_show"><?php echo '<a id="pmpro_user_fields_a" href="javascript:void()">' . esc_html__( 'Click here to login or create a username and password', 'pmpro-social-login' ) . '</a>' ; ?></div></div>
 			</div>
 		</fieldset>
@@ -278,11 +278,11 @@ function pmprosl_nsl_login_form_tweaks( $content, $args ) {
 		?>
 			<style>#pmpro_login .nsl-container-buttons{width:100%;}</style>
 		<?php
-		$content .= '<br>';
+		$content .= '<div class="' . esc_attr( pmpro_get_element_class( 'pmpro_spacer' ) ) . '"></div>';
 		$content .= '<div style="display: flex; align-items: center; text-align: center;">
-						<div style="flex: 1; height: 1px; background-color: lightgrey;"></div>
-							<span style="margin: 0 10px; color: grey;">' . esc_html__( 'OR', 'pmpro-social-login' ) . '</span>
-						<div style="flex: 1; height: 1px; background-color: lightgrey;"></div>
+						<div style="flex: 1; height: 1px; background-color: var(--pmpro--color--contrast);"></div>
+							<span style="margin: 0 10px; color: var(--pmpro--color--contrast);">' . esc_html__( 'OR', 'pmpro-social-login' ) . '</span>
+						<div style="flex: 1; height: 1px; background-color: var(--pmpro--color--contrast);"></div>
 					</div>';
 
 		// Put the Nextend Social Login filter back.
