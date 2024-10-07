@@ -1,20 +1,21 @@
-# Copyright (C) 2023 Stranger Studios
+# Copyright (C) 2024 Paid Memberships Pro
 # This file is distributed under the same license as the Paid Memberships Pro - Social Login Add On plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Paid Memberships Pro - Social Login Add On 1.0\n"
+"Project-Id-Version: Paid Memberships Pro - Social Login Add On 1.1\n"
 "Report-Msgid-Bugs-To: info@paidmembershipspro.com\n"
 "Last-Translator: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "Language-Team: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-11T15:51:56+00:00\n"
+"POT-Creation-Date: 2024-10-07T15:04:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.8.1\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: pmpro-social-login\n"
 
 #. Plugin Name of the plugin
+#: pmpro-social-login.php
 msgid "Paid Memberships Pro - Social Login Add On"
 msgstr ""
 
@@ -43,6 +44,7 @@ msgid "Paid Memberships Pro Social Login will use %s for social login integratio
 msgstr ""
 
 #. translators: %1$s is a link to the NextEnd plugin, %2$s is a link to the Super Socializer plugin
+#. translators: %1$s is a link to the Nextend plugin, %2$s is a link to the Super Socializer plugin
 #: pmpro-social-login.php:81
 msgid "The Social Login Add On for Paid Memberships Pro requires either the %1$s or %2$s plugin to be installed and configured."
 msgstr ""
@@ -65,4 +67,56 @@ msgstr ""
 
 #: pmpro-social-login.php:190
 msgid "Click here to login, create a username and password"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: pmpro-social-login.php
+msgid "https://www.paidmembershipspro.com/add-ons/social-login-add-on/"
+msgstr ""
+
+#. Description of the plugin
+#: pmpro-social-login.php
+msgid "Offer social login for your membership site’s checkout and log in forms."
+msgstr ""
+
+#. Author of the plugin
+#: pmpro-social-login.php
+msgid "Paid Memberships Pro"
+msgstr ""
+
+#. Author URI of the plugin
+#: pmpro-social-login.php
+msgid "https://www.paidmembershipspro.com"
+msgstr ""
+
+#: pmpro-social-login.php:146
+msgid "Default Level"
+msgstr ""
+
+#: pmpro-social-login.php:148
+msgid "Make this the default level for users who log in the first time via social login."
+msgstr ""
+
+#: pmpro-social-login.php:152
+msgid "Hide Social Login"
+msgstr ""
+
+#: pmpro-social-login.php:154
+msgid "Hide social login at checkout for this membership level."
+msgstr ""
+
+#: pmpro-social-login.php:212
+msgid "Connect and Sign In"
+msgstr ""
+
+#: pmpro-social-login.php:214
+msgid "Create a new account or log in to an existing account using a connected platform."
+msgstr ""
+
+#: pmpro-social-login.php:220
+msgid "Or, click here to create your account manually"
+msgstr ""
+
+#: pmpro-social-login.php:284
+msgid "OR"
 msgstr ""
