@@ -5,13 +5,13 @@ Requires at least: 4.8
 Tested up to: 6.2
 Stable tag: 1.0
 
-Allow users to create membership account via social networks as configured via NextEnd Social Login or Super Socializer plugin.
+Allow users to create membership account via social networks as configured via Nextend Social Login or Super Socializer plugin.
 
 == Description ==
 
 The Paid Memberships Pro Social Login Add On adds a Social Login option to Membership Checkout. You can set a level to "Hide" social login from the Memberships > Membership Levels > Edit Level admin page. You can set a level as the default level to users logging in for the first time via Social Login.
 
-Requires Paid Memberships Pro and either NextEnd Social Login or Super Socializer installed and activated.
+Requires Paid Memberships Pro and either Nextend Social Login or Super Socializer installed and activated.
 
 == Installation ==
 
@@ -26,7 +26,7 @@ Requires Paid Memberships Pro and either NextEnd Social Login or Super Socialize
 
 == How to Use ==
 
-1. After activation and proper configuration of the WordPress Social Login plugin, you can navigate to the membership checkout page as a visitor to see the Social Login options. See http://www.paidmembershipspro.com/add-ons/plus-add-ons/social-login-add-on/ for application setup with social networks.
+1. After activation and proper configuration of the WordPress Social Login plugin, you can navigate to the membership checkout page as a visitor to see the Social Login options. See https://www.paidmembershipspro.com/add-ons/social-login-add-on/ for application setup with social networks.
 2. To hide Social Login at Membership Checkout for a specifc level, edit the Membership Level and check the box to "Hide Social Login at Checkout for this Level".
 3. To set the default level to users logging in for the first time via Social Login, edit the Membership Level and check the box to "Make this the default level to users logging in for the first time via Social Login".
 
