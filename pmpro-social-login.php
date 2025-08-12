@@ -92,7 +92,7 @@ function pmprosl_check_plugins() {
 		update_option( 'pmpro_social_login_shortcode', $active_plugins[0]['shortcode'] );
 	}
 }
-add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
+add_action( 'init', 'pmprosl_check_plugins' );
 
 /**
  * Check if a default level is set and if so, set it for new users created via social login.
@@ -293,3 +293,4 @@ function pmprosl_nsl_login_form_tweaks( $content, $args ) {
 
 }
 add_action( 'login_form_bottom', 'pmprosl_nsl_login_form_tweaks', 5, 2 );
+
