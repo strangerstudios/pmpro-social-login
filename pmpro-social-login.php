@@ -292,5 +292,3 @@ function pmprosl_nsl_login_form_tweaks( $content, $args ) {
 
 }
 add_action( 'login_form_bottom', 'pmprosl_nsl_login_form_tweaks', 5, 2 );
-
-
