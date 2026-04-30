@@ -91,7 +91,7 @@ function pmprosl_check_plugins() {
 		update_option( 'pmpro_social_login_shortcode', $active_plugins[0]['shortcode'] );
 	}
 }
-add_action( 'admin_init', 'pmprosl_check_plugins' );
+add_action( 'admin_init', 'pmprosl_check_plugins', 9 );
 
 /**
  * Check if a default level is set and if so, set it for new users created via social login.
