@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: pmpro, paid memberships pro, members, social login
 Requires at least: 5.4
-Tested up to: 6.6
-Stable tag: 1.1
+Tested up to: 6.9
+Stable tag: 1.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -33,6 +33,11 @@ Requires Paid Memberships Pro and either Nextend Social Login or Super Socialize
 3. To set the default level to users logging in for the first time via Social Login, edit the Membership Level and check the box to "Make this the default level to users logging in for the first time via Social Login".
 
 == Changelog ==
+
+= 1.1.1 - 2026-04-30 =
+* ENHANCEMENT: Added a documentation link to the Social Login Settings panel on the Edit Membership Level admin page. #30 (@kimcoleman)
+* ENHANCEMENT: Added "Docs" and "Support" links to the plugin row meta on the Plugins admin screen. #26 (@ipokkel)
+* BUG FIX: Fixed PHP notices about translations being loaded too early for the `pmpro-social-login` text domain on WordPress 6.7+. #29 (@dwanjuki)
 
 = 1.1 - 2024-10-08 =
 * ENHANCEMENT: Updated UI for compatibility with PMPro v3.1. #20 (@andrewlimaza)
