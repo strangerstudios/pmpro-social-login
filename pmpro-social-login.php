@@ -298,3 +298,18 @@ function pmprosl_nsl_login_form_tweaks( $content, $args ) {
 
 }
 add_action( 'login_form_bottom', 'pmprosl_nsl_login_form_tweaks', 5, 2 );
+
+/**
+ * Function to add links to the plugin row meta
+ */
+function pmprosl_plugin_row_meta( $links, $file ) {
+	if ( strpos( $file, 'pmpro-social-login.php' ) !== false ) {
+		$new_links = array(
+			'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/social-login-add-on/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro-social-login' ) ) . '">' . __( 'Docs', 'pmpro-social-login' ) . '</a>',
+			'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro-social-login' ) ) . '">' . __( 'Support', 'pmpro-social-login' ) . '</a>',
+		);
+		$links     = array_merge( $links, $new_links );
+	}
+	return $links;
+}
+add_filter( 'plugin_row_meta', 'pmprosl_plugin_row_meta', 10, 2 );
