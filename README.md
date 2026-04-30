@@ -7,9 +7,9 @@
 
 ### Welcome to the Paid Memberships Pro - Social Login GitHub Repository
 
-Offer social login for your membership site’s checkout and log in forms. This Add On connects the Nextend Social Login and Super Socializer plugin with your PMPro site.
+Offer social login for your membership site’s checkout and log in forms. This Add On connects the [Nextend Social Login](https://wordpress.org/plugins/nextend-facebook-connect/) and [Super Socializer](https://wordpress.org/plugins/super-socializer/) plugins with your PMPro site.
 
-For more information please visit [the Add On documentation page for this plugin](https://www.paidmembershipspro.com/add-ons/social-login-add-on/).
+For more information please visit [https://www.paidmembershipspro.com/add-ons/social-login-add-on/](https://www.paidmembershipspro.com/add-ons/social-login-add-on/).
 
 ## Installation ##
 For detailed installation steps, visit the [documentation](https://www.paidmembershipspro.com/add-ons/social-login-add-on/) page.
@@ -36,3 +36,4 @@ Here are some ways for **non-developers to contribute** to Paid Memberships Pro 
 
 1. Translate Paid Memberships Pro - Social Login into your own [language](https://www.paidmembershipspro.com/paid-memberships-pro-in-your-language/).
 2. [Purchase a Plus membership](https://paidmembershipspro.com/pricing) to help fund ongoing development and bug fixes.
+3. Leave an honest review for [Paid Memberships Pro - Social Login](https://www.paidmembershipspro.com/submit-testimonial/).
