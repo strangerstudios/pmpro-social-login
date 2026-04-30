@@ -139,6 +139,12 @@ function pmprosl_pmpro_membership_level_before_content_settings()
 			</button>
 		</div>
 		<div class="pmpro_section_inside">
+			<p>
+				<?php
+				$social_login_link = '<a title="' . esc_attr__( 'Social Login Add On', 'pmpro-social-login' ) . '" target="_blank" rel="nofollow noopener" href="https://www.paidmembershipspro.com/add-ons/social-login-add-on/?utm_source=plugin&utm_medium=pmpro-social-login&utm_campaign=add-ons">' . esc_html__( 'Social Login', 'pmpro-social-login' ) . '</a>';
+				printf( esc_html__( 'Learn more about %s.', 'pmpro-social-login' ), $social_login_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				?>
+			</p>
 			<table class="form-table">
 				<tbody>
 					<tr>
