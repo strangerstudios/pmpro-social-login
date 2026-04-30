@@ -31,8 +31,7 @@ require_once( dirname(__FILE__) . '/includes/notices.php' );
  * Check what plugins are active and update settings.
  */
 function pmprosl_check_plugins() {
-	// Don't waste resources on the frontend.
-	if( ! is_admin() || ! defined( 'PMPRO_VERSION') ) {
+	if ( ! defined( 'PMPRO_VERSION' ) ) {
 		return;
 	}
 
@@ -92,7 +91,7 @@ function pmprosl_check_plugins() {
 		update_option( 'pmpro_social_login_shortcode', $active_plugins[0]['shortcode'] );
 	}
 }
-add_action( 'plugins_loaded', 'pmprosl_check_plugins' );
+add_action( 'admin_init', 'pmprosl_check_plugins', 9 );
 
 /**
  * Check if a default level is set and if so, set it for new users created via social login.
