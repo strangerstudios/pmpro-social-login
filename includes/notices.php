@@ -11,7 +11,7 @@ function pmprosl_admin_init_notifications() {
 	$maybe_installing = $script == 'update.php' || $script == 'plugins.php';
 	$admin_notice = get_option( 'pmpro_social_login_notice' );
 	$admin_notice_dismissed = get_option( 'pmpro_social_login_notice_dismiss' );
-	if ( $admin_notice && ! $admin_notice_dismissed && ! $maybe_installing ) {
+	if ( $admin_notice && ! $admin_notice_dismissed && ! $maybe_installing && current_user_can( 'manage_options' ) ) {
 		wp_enqueue_script( 'pmprosl-admin-dismiss-notice', plugin_dir_url(dirname(__FILE__)) . '/js/admin-dismiss-notice.js', array( 'jquery' ), PMPROSL_VERSION, true );
 		wp_localize_script( 'pmprosl-admin-dismiss-notice', 'pmprosl_dismiss_notice', array( 'nonce' => wp_create_nonce( 'pmprosl_dismiss_notice' ) ) );
 		add_action( 'admin_notices', 'pmprosl_admin_notice' );
