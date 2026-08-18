@@ -11,7 +11,7 @@ jQuery( document ).ready(
 						type:'POST',
 						timeout: 30000,
 						dataType: 'html',
-						data: 'action=pmprosl_dismiss_notice',
+						data: 'action=pmprosl_dismiss_notice&nonce=' + pmprosl_dismiss_notice.nonce,
 						error: function(xml){
 							alert( 'There was an error dismissing the PMPro Social Login notice.' );
 						},
