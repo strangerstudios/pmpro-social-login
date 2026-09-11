@@ -3,14 +3,14 @@
  * Plugin Name: Paid Memberships Pro - Social Login Add On
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/social-login-add-on/
  * Description: Offer social login for your membership site’s checkout and log in forms.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
  * Text Domain: pmpro-social-login
  * Domain Path: /languages
  */
 
-define( 'PMPROSL_VERSION', '1.1.1' );
+define( 'PMPROSL_VERSION', '1.1.2' );
 
 /**
  * pmprommpu_load_plugin_text_domain

@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: pmpro, paid memberships pro, members, social login
 Requires at least: 5.4
-Tested up to: 6.9
-Stable tag: 1.1.1
+Tested up to: 7.1
+Stable tag: 1.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -33,6 +33,10 @@ Requires Paid Memberships Pro and either Nextend Social Login or Super Socialize
 3. To set the default level to users logging in for the first time via Social Login, edit the Membership Level and check the box to "Make this the default level to users logging in for the first time via Social Login".
 
 == Changelog ==
+
+= 1.1.2 - 2026-09-11 =
+* SECURITY: The AJAX handler that dismisses the Social Login setup notice now verifies a nonce and requires the `manage_options` capability, and is no longer registered for logged-out requests. #31 (@flintfromthebasement)
+* ENHANCEMENT: The Social Login setup notice is now only shown to users who have permission to dismiss it. #31 (@flintfromthebasement)
 
 = 1.1.1 - 2026-04-30 =
 * ENHANCEMENT: Added a documentation link to the Social Login Settings panel on the Edit Membership Level admin page. #30 (@kimcoleman)
