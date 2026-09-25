@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function pmprosl_admin_init_notifications() {
 
 	if ( ! defined( 'PMPRO_VERSION' ) ) {
@@ -7,7 +11,7 @@ function pmprosl_admin_init_notifications() {
 	}
 	
 	// we want to avoid notices on some screens
-	$script           = basename( $_SERVER['SCRIPT_NAME'] );
+	$script           = isset( $_SERVER['SCRIPT_NAME'] ) ? basename( sanitize_text_field( wp_unslash( $_SERVER['SCRIPT_NAME'] ) ) ) : '';
 	$maybe_installing = $script == 'update.php' || $script == 'plugins.php';
 	$admin_notice = get_option( 'pmpro_social_login_notice' );
 	$admin_notice_dismissed = get_option( 'pmpro_social_login_notice_dismiss' );
