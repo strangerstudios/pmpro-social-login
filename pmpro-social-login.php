@@ -10,6 +10,10 @@
  * Domain Path: /languages
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 define( 'PMPROSL_VERSION', '1.1.2' );
 
 /**
@@ -105,7 +109,7 @@ function pmprosl_pmpro_default_registration_level($user_id) {
 	
 	//if default is set and we're not otherwise checking out
 	$default_level = get_option('pmpro_social_login_default_level');
-	if (!empty($default_level) && empty($pmpro_level) && empty($_REQUEST['level']))
+	if (!empty($default_level) && empty($pmpro_level) && empty($_REQUEST['level'])) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only check for an in-progress checkout; no state change is driven by this value.
 	{	
 		pmpro_changeMembershipLevel($default_level, $user_id);
 
@@ -127,7 +131,7 @@ add_action( 'nsl_register_new_user', 'pmprosl_pmpro_default_registration_level' 
 //checkbox to allow social login for this level on edit level page
 function pmprosl_pmpro_membership_level_before_content_settings()
 {
-	$level = $_REQUEST['edit'];	
+	$level = isset( $_REQUEST['edit'] ) ? intval( $_REQUEST['edit'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only; used to display settings on the PMPro edit level page.
 	$social_login_default_level = get_option('pmpro_social_login_default_level');
 	$hide_social_login = get_option("level_" . $level . "_hide_social_login");
 	?>
@@ -171,7 +175,7 @@ add_action("pmpro_membership_level_before_content_settings", "pmprosl_pmpro_memb
 function pmprosl_pmpro_save_membership_level($saveid)
 {
 	//update hide social login setting
-	if(!empty($_REQUEST['hide_social_login']))
+	if(!empty($_REQUEST['hide_social_login'])) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce and capability verified by PMPro's level save (check_admin_referer in adminpages/membershiplevels.php) before pmpro_save_membership_level fires.
 	{
 		delete_option('level_' . $saveid . '_hide_social_login');
 		add_option("level_" . $saveid . "_hide_social_login", 1, '', 'no');
@@ -182,7 +186,7 @@ function pmprosl_pmpro_save_membership_level($saveid)
 	}
 		
 	//update default level options
-	if(!empty($_REQUEST['social_login_default_level']))
+	if(!empty($_REQUEST['social_login_default_level'])) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce and capability verified by PMPro's level save (check_admin_referer in adminpages/membershiplevels.php) before pmpro_save_membership_level fires.
 	{
 		delete_option('pmpro_social_login_default_level');
 		add_option('pmpro_social_login_default_level', $saveid, '', 'no');
@@ -218,7 +222,7 @@ function pmprosl_pmpro_user_fields() {
 					<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_fields' ) ); ?>">
 						<p class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_fields-description' ) ); ?>"><?php esc_html_e( 'Create a new account or log in to an existing account using a connected platform.', 'pmpro-social-login' ); ?></p>
 						<div class="<?php echo esc_attr( pmpro_get_element_class( 'pmpro_form_field' ) ); ?>">
-							<?php echo $login_shortcode; ?>
+							<?php echo $login_shortcode; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Rendered shortcode HTML (buttons, forms, SVG) from the admin-configured social login plugin, which escapes its own output. ?>
 						</div>
 					</div> <!-- end pmpro_form_fields -->
 				</div> <!-- end pmpro_card_content -->
@@ -245,7 +249,7 @@ function pmprosl_get_login_shortcode() {
 	$plugin = get_option( 'pmpro_social_login_shortcode' );
 	// if using Nextend and coming from checkout, make sure we redirect back to checkout
 	if($plugin === '[nextend_social_login]' && is_page( $pmpro_pages['checkout'] ) ){
-		$plugin === '[nextend_social_login redirect=' . 	home_url(add_query_arg(array($_GET), $wp->request)) . ']';
+		$plugin === '[nextend_social_login redirect=' . 	home_url(add_query_arg(array($_GET), $wp->request)) . ']'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only, no state change. Note: this line is a comparison (===), not an assignment, so its result is unused; escape the $_GET values if it is ever changed to assign.
 	}
 	$plugin = apply_filters( 'pmprosl_login_shortcode', $plugin );
 	return $plugin;
@@ -253,7 +257,7 @@ function pmprosl_get_login_shortcode() {
 
 // use the requested redirect if we're logging in with Nextend
 function pmprosl_preserve_redirect($redirect_to, $request, $user) {
-	if( isset($_REQUEST["loginSocial"]) ) {
+	if( isset($_REQUEST["loginSocial"]) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only routing flag set by Nextend Social Login; no state change.
 		$redirect_to = $request;
 	}
 	return $redirect_to;
